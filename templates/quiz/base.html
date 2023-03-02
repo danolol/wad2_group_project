@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+    <head lang="en">
+        <meta charset="UTF-8" />
+        <title>
+            (placeholder name) -
+            {% block title_block %}
+                (default)
+            {% endblock %}
+        </title>
+    </head>
+    <body>
+
+        <div>
+            {% block body_block %}
+            {% endblock %}
+        </div>
+
+    </body>
+</html>
