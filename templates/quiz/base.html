@@ -12,10 +12,23 @@
         </title>
     </head>
     <body>
-
         <div>
             {% block body_block %}
             {% endblock %}
+        </div>
+
+        <hr />
+
+        <div>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'auth_logout' %}?next={% url 'quiz:home' %}">Logout</a></li>
+                    <li><a href="{% url 'auth_password_change' %}">Change Your Password</a></li>
+                {% else %}
+                    <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
+                    <li><a href="{% url 'auth_login' %}">Login</a></li>
+                {% endif %}
+            </ul>
         </div>
 
     </body>

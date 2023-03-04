@@ -24,4 +24,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('quiz/', include('quiz.urls')),
     path('admin/', admin.site.urls),
-]
+    path('accounts/', include('registration.backends.simple.urls'))
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

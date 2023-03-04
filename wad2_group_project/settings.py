@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'quiz',
+    'registration',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,9 @@ MEDIA_URL = '/media/'
 
 #Registration
 
+REGISTRATION_OPEN = True
+REGISTRATION_AUTO_LOGIN = True
+LOGIN_REDIRECT_URL = 'quiz:home'
+LOGIN_URL = 'auth_login'
+PASSWORD_CHANGE_URL = 'auth_password_change'
+CHANGE_COMPLETE_URL = 'auth_password_change_done'
