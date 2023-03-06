@@ -135,7 +135,7 @@ MEDIA_URL = '/media/'
 
 REGISTRATION_OPEN = True
 REGISTRATION_AUTO_LOGIN = True
-LOGIN_REDIRECT_URL = 'quiz:home'
+LOGIN_REDIRECT_URL = ''
 LOGIN_URL = 'auth_login'
 PASSWORD_CHANGE_URL = 'auth_password_change'
 CHANGE_COMPLETE_URL = 'auth_password_change_done'
