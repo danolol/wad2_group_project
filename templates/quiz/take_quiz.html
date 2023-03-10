@@ -1,0 +1,33 @@
+{% extends 'quiz/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    {% if quiz %}
+        {{ quiz.title }}
+    {% else %}
+    404
+    {% endif %}
+{% endblock %}
+
+{% block body_block %}
+    <h1>{{ quiz.title }}</h1>
+
+    <form method="post" action ="{% url 'quiz:quiz_result' quiz.slug %}">
+    {% csrf_token %}
+    {% for question in quiz.question_set.all %}
+        
+        <div>
+            {{ question.description }}
+            <br>
+            {% for answer in question.answer_set.all %}
+                <input type = "radio" name = "answer{{ question.id }}" value = "{{ answer.id }}" id = "answer{{ forloop.counter }}"> 
+                <label for="answer{{ forloop.counter }}">{{ answer.description }} </label>
+                <br>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    <input type="submit" value = "Submit Answers"/> 
+    </form>
+{% endblock %}
+
