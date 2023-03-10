@@ -1,4 +1,5 @@
 from django import forms
+<<<<<<< HEAD
 from quiz.models import Quiz, Outcome, Question, Answer
 
 class QuizForm(forms.ModelForm):
@@ -38,3 +39,12 @@ class AnswerForm(forms.ModelForm):
 
 
 
+=======
+from django.contrib.auth.models import User
+from .models import UserProfile
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('picture',)
+>>>>>>> main

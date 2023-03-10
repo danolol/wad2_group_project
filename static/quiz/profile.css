@@ -1,0 +1,19 @@
+body{
+	background-color: aquamarine;
+}
+
+
+.col3 {
+	border: 1px solid #ffffff; /* add a border around the user info box */
+	padding: 10px; /* add some padding to the box */
+	margin-bottom: 10px; /* add some space between the box and the next element */
+	background-color: #ffffff; /* add a background color to the box */
+	float: right;
+	border-radius: 10px;
+  }
+
+  footer{
+	position: fixed;
+	bottom: 0;
+	width: 100;
+  }
