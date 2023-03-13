@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 from django.views import View
 from django.utils.decorators import method_decorator
 from .forms import UserProfileForm
+from quiz.forms import QuizForm, OutcomeForm, QuestionForm, AnswerForm
+import datetime
 
 
 def home(request):
@@ -19,11 +21,87 @@ def home(request):
     response = render(request, 'quiz/home.html', context=context_dict)
     return response
 
-def make_quiz(request):
+def pre_make_quiz(request):
     context_dict = {}
+    context_dict['questions'] = "Please enter a number of questions for your quiz: "
+    context_dict['outcomes'] = """Please enter a number of outcomes for your quiz (bare in mind 
+    each question must have an equal number of outcomes): """
 
-    response = render(request, 'quiz/make_quiz.html', context=context_dict)
-    return response
+    return render(request, 'quiz/pre_make_quiz.html', context=context_dict)
+
+def make_quiz_main(request):
+    num_questions = int(request.POST['questions'])
+    num_outcomes = int(request.POST['outcomes'])
+
+    quiz_form = QuizForm(prefix = 'quiz')
+    OutcomesFormset = formset_factory(OutcomeForm, extra=num_outcomes)
+    QuestionsFormset = formset_factory(QuestionForm, extra=num_questions)
+    AnswersFormset = formset_factory(AnswerForm, extra=num_outcomes*num_questions)
+    
+    outcomes_formset = OutcomesFormset(prefix = 'outcome')
+    questions_formset = QuestionsFormset(prefix = 'question')
+    answers_formset = AnswersFormset(prefix = 'answer')
+
+    context_dict = {}
+    context_dict['quiz_form'] = quiz_form
+    context_dict['outcomes_formset'] = outcomes_formset
+    context_dict['questions_formset'] = questions_formset
+    context_dict['answers_formset'] = answers_formset
+    context_dict['num_questions'] = num_questions
+    context_dict['num_outcomes'] = num_outcomes
+
+    return render(request, 'quiz/make_quiz.html', context=context_dict)
+
+def make_quiz_result(request, num_questions, num_outcomes):
+
+    num_questions, num_outcomes = int(num_questions), int(num_outcomes)
+    quiz_form = QuizForm(request.POST, prefix='quiz')
+
+    if quiz_form.is_valid():
+        quiz = quiz_form.save(commit=False)
+        quiz.creator = request.user
+        quiz.save()
+    
+    else:
+        print(quiz_form.errors)
+
+    for i in range(num_outcomes):
+        outcome_form = OutcomeForm(request.POST, prefix=f'outcome-{i}')
+        if outcome_form.is_valid():
+            outcome = outcome_form.save(commit=False)
+            outcome.quiz_id = quiz.id
+            outcome.index= i
+            outcome.save()
+    
+        else:
+            print(outcome_form.errors)
+            
+
+    counter = 0
+    for i in range(num_questions):
+        question_form = QuestionForm(request.POST, prefix=f'question-{i}')
+        if question_form.is_valid():
+            question = question_form.save(commit=False)
+            question.quiz_id = quiz.id
+            question.save()
+        
+        else:
+            print(question_form.errors)
+        
+        for j in range(num_outcomes):
+            answer_form = AnswerForm(request.POST, prefix=f'answer-{counter}')
+            print(answer_form)
+            if answer_form.is_valid():
+                answer = answer_form.save(commit=False)
+                answer.question_id = question.id
+                answer.index = j
+                answer.save()
+                counter += 1
+            
+            else:
+                print(answer_form.errors)
+    
+    return render(request, 'quiz/make_quiz_result.html')
 
 def show_quizzes(request):
     context_dict = {}

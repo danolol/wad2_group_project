@@ -1,10 +1,75 @@
 {% extends 'quiz/base.html' %}
 {% load staticfiles %}
+{% load quiz_template_tags %}
 
 {% block title_block %}
 Make a quiz
 {% endblock %}
 
 {% block body_block %}
-    This is the make quiz page !!!
+    <h1>Create a New Quiz</h1>
+        <div>
+            <form id="quiz_form" method="post" action="{% url 'quiz:make_quiz_result' num_questions num_outcomes %}">
+                {% csrf_token %}
+                
+                {% for hidden in quiz_form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+
+                {% for field in quiz_form.visible_fields %}
+                    {{ field.errors }}
+                    {{ field.help_text }}
+                    {{ field }}
+                    <br>
+                {% endfor %}
+                <br>
+
+                {% for form in outcomes_formset %}
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+
+                    {% for field in form.visible_fields %}
+                        {{ field.errors }}
+                        {{ field.help_text }}
+                        {{ field }}
+                        <br>
+                    {% endfor %}
+                {% endfor %}
+                <br>
+
+                {% for q_form in questions_formset %}
+                    {% for hidden in q_form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {% for field in q_form.visible_fields %}
+                        {{ field.errors }}
+                        Q{{ forloop.parentloop.counter }}. {{ field.help_text }}
+                        {{ field }}
+                        <br>
+                    {% endfor %}
+                    <br>
+                {% endfor %}
+
+                {% for a_form in answers_formset %}
+                    {% if forloop.counter0|modulo:num_outcomes == 0 %}
+                        <b>Question {{forloop.counter0|div:num_outcomes|add:"1"}}</b><br>
+                    {% endif %}
+
+                        {% for hidden in a_form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+
+                        {% for field in a_form.visible_fields %}
+                            {{ field.errors }}
+                            {{ field.help_text }} {{forloop.parentloop.counter0|modulo:num_outcomes|add:"1"}}:
+                            {{ field }}
+                            <br>
+                        {% endfor %}
+                {% endfor %}
+                <br>
+
+                <input type="submit" name="submit" value="Submit" />
+            </form>
+        </div>
 {% endblock %}

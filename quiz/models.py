@@ -14,14 +14,14 @@ class UserProfile(models.Model):
 class Quiz(models.Model):
 
     title = models.CharField(max_length = 128)
-    creator = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length = 255)
     views = models.IntegerField(default = 0)
     date = models.DateField(default = datetime.date.today)
     slug = models.SlugField(unique=True)
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        self.slug = slugify(self.title + " " + self.creator.username)
         super(Quiz, self).save(*args, **kwargs)
     
     class Meta:
@@ -40,7 +40,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     description = models.CharField(max_length = 255)
-    index = models.IntegerField("index", default=0)
+    index = models.IntegerField("index")
 
     def __str__(self):
         return self.description
@@ -57,8 +57,8 @@ class Review(models.Model):
 class Outcome(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     name = models.CharField(max_length = 255)
-    image = models.ImageField(upload_to='outcome_images', blank=True)
-    index = models.IntegerField("index", default = 0)
+    image = models.ImageField(upload_to='outcome_images', blank = True)
+    index = models.IntegerField("index")
 
     def __str__(self):
         return self.name
