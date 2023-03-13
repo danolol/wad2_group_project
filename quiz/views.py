@@ -23,15 +23,20 @@ def home(request):
 
 def pre_make_quiz(request):
     context_dict = {}
-    context_dict['questions'] = "Please enter a number of questions for your quiz: "
-    context_dict['outcomes'] = """Please enter a number of outcomes for your quiz (bare in mind 
+    context_dict['questions_message'] = "Please enter a number of questions for your quiz: "
+    context_dict['outcomes_message'] = """Please enter a number of outcomes for your quiz (bare in mind 
     each question must have an equal number of outcomes): """
+
+    if request.method == "POST":
+        num_questions = request.POST['questions']
+        num_outcomes = request.POST['outcomes']
+        return redirect(reverse('quiz:make_quiz_main', kwargs={'num_questions':num_questions, 'num_outcomes':num_outcomes}))
 
     return render(request, 'quiz/pre_make_quiz.html', context=context_dict)
 
-def make_quiz_main(request):
-    num_questions = int(request.POST['questions'])
-    num_outcomes = int(request.POST['outcomes'])
+def make_quiz_main(request, num_questions, num_outcomes):
+    num_questions = int(num_questions)
+    num_outcomes = int(num_outcomes)
 
     quiz_form = QuizForm(prefix = 'quiz')
     OutcomesFormset = formset_factory(OutcomeForm, extra=num_outcomes)
@@ -49,6 +54,56 @@ def make_quiz_main(request):
     context_dict['answers_formset'] = answers_formset
     context_dict['num_questions'] = num_questions
     context_dict['num_outcomes'] = num_outcomes
+
+    ##Handle response & validate forms
+    if request.method == "POST":
+        quiz_form = QuizForm(request.POST, prefix='quiz')
+
+        if quiz_form.is_valid():
+            quiz = quiz_form.save(commit=False)
+            quiz.creator = request.user
+            quiz.save()
+        
+        else:
+            print(quiz_form.errors)
+
+        for i in range(num_outcomes):
+            outcome_form = OutcomeForm(request.POST, prefix=f'outcome-{i}')
+            if outcome_form.is_valid():
+                outcome = outcome_form.save(commit=False)
+                outcome.quiz_id = quiz.id
+                outcome.index= i
+                outcome.save()
+        
+            else:
+                print(outcome_form.errors)
+                
+
+        counter = 0
+        for i in range(num_questions):
+            question_form = QuestionForm(request.POST, prefix=f'question-{i}')
+            if question_form.is_valid():
+                question = question_form.save(commit=False)
+                question.quiz_id = quiz.id
+                question.save()
+            
+            else:
+                print(question_form.errors)
+            
+            for j in range(num_outcomes):
+                answer_form = AnswerForm(request.POST, prefix=f'answer-{counter}')
+                print(answer_form)
+                if answer_form.is_valid():
+                    answer = answer_form.save(commit=False)
+                    answer.question_id = question.id
+                    answer.index = j
+                    answer.save()
+                    counter += 1
+                
+                else:
+                    print(answer_form.errors)
+        
+        return render(request, 'quiz/make_quiz_result.html')
 
     return render(request, 'quiz/make_quiz.html', context=context_dict)
 

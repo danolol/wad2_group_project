@@ -9,7 +9,7 @@ Make a quiz
 {% block body_block %}
     <h1>Create a New Quiz</h1>
         <div>
-            <form id="quiz_form" method="post" action="{% url 'quiz:make_quiz_result' num_questions num_outcomes %}">
+            <form id="quiz_form" method="post" action="{% url 'quiz:make_quiz_main' num_questions num_outcomes %}">
                 {% csrf_token %}
                 
                 {% for hidden in quiz_form.hidden_fields %}

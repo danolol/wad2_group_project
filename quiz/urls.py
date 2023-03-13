@@ -8,8 +8,8 @@ app_name = 'quiz'
 urlpatterns = [
     path('', views.home, name='home'),
     path('makequiz/pre/', views.pre_make_quiz, name='pre_make_quiz'),
-    path('makequiz/main/', views.make_quiz_main, name='make_quiz_main'),
-    path('makequiz/thanks<num_questions><num_outcomes>', views.make_quiz_result, name='make_quiz_result'),
+    path('makequiz/<num_questions>/<num_outcomes>/', views.make_quiz_main, name='make_quiz_main'),
+    path('makequiz/thanks', views.make_quiz_result, name='make_quiz_result'),
     path('quizzes/', views.show_quizzes, name = 'show_quizzes'),
     path('quizzes/<slug:quiz_title_slug>/', 
     views.take_quiz, name = 'take_quiz'),
