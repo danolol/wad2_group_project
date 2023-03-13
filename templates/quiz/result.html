@@ -7,5 +7,8 @@
 
 {% block body_block %}
     <h1>{{ quiz }} - results</h1>
+    <div>
+        <img src = "{{ MEDIA_URL }}/{{ outcome.image }}" width = "250" height = "250" />
+    </div>
     <p>Your outcome is... {{ outcome }}</p>
 {% endblock %}

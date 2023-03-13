@@ -9,17 +9,27 @@ Make a quiz
 {% block body_block %}
     <h1>Create a New Quiz</h1>
         <div>
-            <form id="quiz_form" method="post" action="{% url 'quiz:make_quiz_main' num_questions num_outcomes %}">
+            <form id="quiz_form" method="post" enctype="multipart/form-data" action="{% url 'quiz:make_quiz_main' num_questions num_outcomes %}">
                 {% csrf_token %}
-                
+                {{ outcomes_formset.management_form }}
+                {{ questions_formset.management_form }}
+                {{ answers_formset.management_form }}
+
+                {% if not_unique %}
+                    <h4> You have already created a quiz with this title. Please try again.</h4>
+                {% endif %}
+
+                {% if errors %}
+                    <h4> Quiz submission failed. Issues highlighted below.</h4>
+                {% endif %}
+
                 {% for hidden in quiz_form.hidden_fields %}
                     {{ hidden }}
                 {% endfor %}
 
                 {% for field in quiz_form.visible_fields %}
-                    {{ field.errors }}
                     {{ field.help_text }}
-                    {{ field }}
+                    {{ field }} <b>{{ field.errors.as_text }}</b>
                     <br>
                 {% endfor %}
                 <br>
@@ -30,9 +40,8 @@ Make a quiz
                     {% endfor %}
 
                     {% for field in form.visible_fields %}
-                        {{ field.errors }}
                         {{ field.help_text }}
-                        {{ field }}
+                        {{ field }} <b>{{ field.errors.as_text }}</b>
                         <br>
                     {% endfor %}
                 {% endfor %}
@@ -43,9 +52,8 @@ Make a quiz
                         {{ hidden }}
                     {% endfor %}
                     {% for field in q_form.visible_fields %}
-                        {{ field.errors }}
                         Q{{ forloop.parentloop.counter }}. {{ field.help_text }}
-                        {{ field }}
+                        {{ field }} <b>{{ field.errors.as_text }}</b>
                         <br>
                     {% endfor %}
                     <br>
@@ -61,9 +69,8 @@ Make a quiz
                         {% endfor %}
 
                         {% for field in a_form.visible_fields %}
-                            {{ field.errors }}
                             {{ field.help_text }} {{forloop.parentloop.counter0|modulo:num_outcomes|add:"1"}}:
-                            {{ field }}
+                            {{ field }} <b>{{ field.errors.as_text }}</b>
                             <br>
                         {% endfor %}
                 {% endfor %}

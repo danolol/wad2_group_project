@@ -20,7 +20,7 @@
             {{ question.description }}
             <br>
             {% for answer in question.answer_set.all %}
-                <input type = "radio" name = "answer{{ question.id }}" value = "{{ answer.id }}" id = "answer{{ forloop.counter }}"> 
+                <input type = "radio" name = "answer{{ question.id }}" value = "{{ answer.id }}" id = "answer{{ forloop.counter }}" required> 
                 <label for="answer{{ forloop.counter }}">{{ answer.description }} </label>
                 <br>
             {% endfor %}

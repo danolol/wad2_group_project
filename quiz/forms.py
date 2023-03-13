@@ -13,7 +13,7 @@ class QuizForm(forms.ModelForm):
 
 class OutcomeForm(forms.ModelForm):
     name = forms.CharField(max_length = 255, help_text = "Please enter an outcome for your quiz.", required=True)
-    ##image = forms.ImageField(help_text = "Please upload an image of your outcome.")
+    image = forms.ImageField(help_text = "Please upload an image of your outcome.", required=True)
 
     class Meta:
         model = Outcome

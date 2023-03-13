@@ -21,7 +21,7 @@ class Quiz(models.Model):
     slug = models.SlugField(unique=True)
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title + " " + self.creator.username)
+        self.slug = slugify(self.title + " " + str(self.creator.id))
         super(Quiz, self).save(*args, **kwargs)
     
     class Meta:
@@ -57,7 +57,7 @@ class Review(models.Model):
 class Outcome(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     name = models.CharField(max_length = 255)
-    image = models.ImageField(upload_to='outcome_images', blank = True)
+    image = models.ImageField(upload_to='outcome_images')
     index = models.IntegerField("index")
 
     def __str__(self):
