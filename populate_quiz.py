@@ -103,10 +103,14 @@ def populate():
             q = add_quiz(up, quiz['title'], quiz['description'], quiz['views'], quiz['date'])
             for question in quiz['questions']:
                 qu = add_question(q, question['description'])
+                i = 0
                 for answer in question['answers']:
-                    add_answer(qu, answer)
+                    add_answer(qu, answer, i)
+                    i += 1
+            i = 0
             for outcome in quiz['outcomes']:
-                add_outcome(q, outcome)
+                add_outcome(q, outcome, i)
+                i += 1
             for review in quiz['reviews']:
                 add_review(q, review['user'], review['comments'], review['date'])
 
@@ -131,13 +135,13 @@ def add_question(quiz, description):
     qu.save()
     return qu
 
-def add_answer(question, description):
-    a = Answer.objects.get_or_create(question=question, description=description)[0]
+def add_answer(question, description, index):
+    a = Answer.objects.get_or_create(question=question, description=description, index=index)[0]
     a.save()
     return a
 
-def add_outcome(quiz, name):
-    o = Outcome.objects.get_or_create(quiz=quiz, name=name)[0]
+def add_outcome(quiz, name, index):
+    o = Outcome.objects.get_or_create(quiz=quiz, name=name, index=index)[0]
     o.save()
     return o
 
