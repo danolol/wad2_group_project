@@ -15,11 +15,6 @@
         <link rel="stylesheet" type="text/css" href="{% static 'quiz/base.css' %}">
     </head>
     <body>
-        <div>
-            {% block body_block %}
-            {% endblock %}
-        </div>
-
 
         <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
 
@@ -41,4 +36,10 @@
         </nav>
 
     </body>
+
+    <div>
+        {% block body_block %}
+        {% endblock %}
+    </div>
+
 </html>

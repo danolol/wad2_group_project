@@ -1,10 +1,14 @@
 {% extends 'quiz/base.html' %}
+{% load staticfiles %}
 
 {% block title_block %}
     Login
 {% endblock %}
 
 {% block body_block %}
+
+<link href="{% static 'quiz/login.css' %}" rel="stylesheet">
+
 <h1>Login</h1>
 
 <form method="post" action=".">

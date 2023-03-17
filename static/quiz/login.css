@@ -1,0 +1,35 @@
+body {
+    background: linear-gradient(90deg, #C7C5F4, #776BCC);
+}
+
+.parent-form-container {
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+.form-container {
+    background: linear-gradient(90deg, #5D54A4, #7C78B8);
+    position: relative;
+    height: 600px;
+    width: 360px;
+    text-align: center;
+    
+    box-shadow: 0px 0px 24px #5c5696;
+}
+
+.login {
+    width: 320px;
+    padding: 30px;
+    padding-top: 156px;
+}
+
+.login-field {
+    padding: 20px 0px;
+    position: relative;
+    text-align: left;
+}
+
