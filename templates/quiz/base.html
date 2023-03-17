@@ -21,19 +21,24 @@
         </div>
 
 
-        <div class="bottom-bar">
-            <hr />
-            <ul>
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'auth_logout' %}?next={% url 'quiz:home' %}">Logout</a></li>
-                    <li><a href="{% url 'auth_password_change' %}">Change Your Password</a></li>
-					<li class="nav-item"><a class="nav-link" href="{% url 'quiz:profile' user.username %}">Profile Page</a></li>
-                {% else %}
-                    <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
-                    <li><a href="{% url 'auth_login' %}">Login</a></li>
-                {% endif %}
+        <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+
+        <nav class="navbar">
+
+            <ul class="nav-links">
+            
+                <div class="menu">
+                        <li><a class="active" href="{% url 'home' %}">Home</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'auth_logout' %}?next={% url 'quiz:home' %}">Logout</a></li>
+                        <li><a href="{% url 'auth_password_change' %}">Change Your Password</a></li>
+                    {% else %}
+                        <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
+                        <li><a href="{% url 'auth_login' %}">Login</a></li>
+                    {% endif %}
+                </div>
             </ul>
-        </div>
+        </nav>
 
     </body>
 </html>
