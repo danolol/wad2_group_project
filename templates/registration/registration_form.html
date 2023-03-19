@@ -1,18 +1,33 @@
 {% extends 'quiz/base.html' %}
+{% load staticfiles %}
 
 {% block title_block %}
     Register
 {% endblock %}
 
 {% block body_block %}
-<h1>Register Here</h1>
 
-<form method="post" action=".">
-    {% csrf_token %}
+    <link href="{% static 'quiz/login.css' %}" rel="stylesheet">
 
-    {{ form.as_p }}
+    <div class="parent-form-container">    
+        <div class="form-container">
+            <div class="screen">
 
-    <input type="submit" value="Register" />
-</form>
+                <h3>Register Here</h3>
+
+                <form class="login" method="post" action=".">
+
+                    {% csrf_token %}
+                    
+                    {{ form.email }}
+
+                    <input type="submit" value="Register" />
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 

@@ -7,21 +7,31 @@
 
 {% block body_block %}
 
-<link href="{% static 'quiz/login.css' %}" rel="stylesheet">
+    <link href="{% static 'quiz/login.css' %}" rel="stylesheet">
 
-<h1>Login</h1>
+    <div class="parent-form-container">    
+        <div class="form-container">
+            <div class="screen">
 
-<form method="post" action=".">
-    {% csrf_token %}
+                <h3>Login Here</h3>
 
-    {{ form.as_p }}
+                <form class="login" method="post" action=".">
 
-    <input type="submit" value="Log In" />
-    <input type="hidden" name="next" value="{{ next }}" />
-</form>
+                    {% csrf_token %}
 
-<p>
-    Not registered?
-    <a href="{% url 'registration_register' %}">Register here!</a>
-</p>
+                    {{ form.as_p }}
+
+                    <input type="submit" value="Log In" />
+                    <input type="hidden" name="next" value="{{ next }}" />
+
+                </form>
+
+                <p>
+                    Not registered?
+                    <a href="{% url 'registration_register' %}">Register here!</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
