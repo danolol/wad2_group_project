@@ -171,10 +171,6 @@ def quiz_result(request, quiz_title_slug):
     return render(request, 'quiz/result.html', context=context_dict)
 
     
-
-
-    
-@login_required
 def register_profile(request):
     form = UserProfileForm()
     if request.method == 'POST':

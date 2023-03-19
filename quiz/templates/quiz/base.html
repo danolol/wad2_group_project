@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load static %}
+{% load quiz_template_tags %}
+
+<html>
+    <head lang="en">
+        <meta charset="UTF-8" />
+        <title>
+            (placeholder name) -
+            {% block title_block %}
+                (default)
+            {% endblock %}
+        </title>
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    </head>
+    
+    <body>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                {% if user.is_authenticated %}
+                    <li><a class="nav-link" href="{% url 'logout' %}?next={% url 'home' %}">Logout</a></li>
+                {% else %}
+                    <li><a class="nav-link" href="{% url 'registration' %}">Sign Up</a></li>
+                    <li><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+
+            <form class="d-flex" method=POST>
+                {% csrf_token %}
+        
+                <input class="form-control me-2" type="search" placeholder="Search Quiz" aria-label="Search" name="searched">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </form>
+
+        </nav>
+
+        <br/>
+
+        <div class="container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                        <div>
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block body_block %}
+            {% endblock %}
+
+        </div>
+    
+    </body>
+
+
+</html>
