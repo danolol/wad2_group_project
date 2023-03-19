@@ -14,14 +14,14 @@ class UserProfile(models.Model):
 class Quiz(models.Model):
 
     title = models.CharField(max_length = 128)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    creator = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     description = models.CharField(max_length = 255)
     views = models.IntegerField(default = 0)
     date = models.DateField(default = datetime.date.today)
     slug = models.SlugField(unique=True)
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title + " " + str(self.creator.id))
+        self.slug = slugify(self.title + " " + str(self.creator.user.id))
         super(Quiz, self).save(*args, **kwargs)
     
     class Meta:
