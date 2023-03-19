@@ -27,11 +27,9 @@ class MyRegistrationView(RegistrationView):
         return reverse('quiz:register_profile')
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('quiz/', include('quiz.urls')),
-    path('admin/', admin.site.urls),
-    path('accounts/register/',
-        MyRegistrationView.as_view(),
-        name='registration_register'),
-    path('accounts/', include('registration.backends.simple.urls'))
+    path('members/', include('django.contrib.auth.urls')),
+    path('members/', include('members.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

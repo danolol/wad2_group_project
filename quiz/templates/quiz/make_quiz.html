@@ -1,0 +1,82 @@
+{% extends 'quiz/base.html' %}
+{% load staticfiles %}
+{% load quiz_template_tags %}
+
+{% block title_block %}
+Make a quiz
+{% endblock %}
+
+{% block body_block %}
+    <h1>Create a New Quiz</h1>
+        <div>
+            <form id="quiz_form" method="post" enctype="multipart/form-data" action="{% url 'quiz:make_quiz_main' num_questions num_outcomes %}">
+                {% csrf_token %}
+                {{ outcomes_formset.management_form }}
+                {{ questions_formset.management_form }}
+                {{ answers_formset.management_form }}
+
+                {% if not_unique %}
+                    <h4> You have already created a quiz with this title. Please try again.</h4>
+                {% endif %}
+
+                {% if errors %}
+                    <h4> Quiz submission failed. Issues highlighted below.</h4>
+                {% endif %}
+
+                {% for hidden in quiz_form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+
+                {% for field in quiz_form.visible_fields %}
+                    {{ field.help_text }}
+                    {{ field }} <b>{{ field.errors.as_text }}</b>
+                    <br>
+                {% endfor %}
+                <br>
+
+                {% for form in outcomes_formset %}
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+
+                    {% for field in form.visible_fields %}
+                        {{ field.help_text }}
+                        {{ field }} <b>{{ field.errors.as_text }}</b>
+                        <br>
+                    {% endfor %}
+                {% endfor %}
+                <br>
+
+                {% for q_form in questions_formset %}
+                    {% for hidden in q_form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {% for field in q_form.visible_fields %}
+                        Q{{ forloop.parentloop.counter }}. {{ field.help_text }}
+                        {{ field }} <b>{{ field.errors.as_text }}</b>
+                        <br>
+                    {% endfor %}
+                    <br>
+                {% endfor %}
+
+                {% for a_form in answers_formset %}
+                    {% if forloop.counter0|modulo:num_outcomes == 0 %}
+                        <b>Question {{forloop.counter0|div:num_outcomes|add:"1"}}</b><br>
+                    {% endif %}
+
+                        {% for hidden in a_form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+
+                        {% for field in a_form.visible_fields %}
+                            {{ field.help_text }} {{forloop.parentloop.counter0|modulo:num_outcomes|add:"1"}}:
+                            {{ field }} <b>{{ field.errors.as_text }}</b>
+                            <br>
+                        {% endfor %}
+                {% endfor %}
+                <br>
+
+                <input type="submit" name="submit" value="Submit" />
+            </form>
+        </div>
+{% endblock %}

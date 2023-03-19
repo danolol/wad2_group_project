@@ -1,0 +1,30 @@
+{% extends 'quiz/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Make a quiz
+{% endblock %}
+
+{% block body_block %}
+    <h1>Create a New Quiz</h1>
+        <div>
+            {% if error %}
+                <b>{{ error }}</b>
+                <br><br>
+            {% endif %}
+
+            <form method="post" action="{% url 'quiz:pre_make_quiz' %}">
+                {% csrf_token %}
+
+                <label> {{ questions_message }} </label>
+                <input type = "number" min = 1 max = 10 name = "questions" id = "questions" required/> 
+                <br><br>
+
+                <label> {{ outcomes_message }} </label>
+                <input type = "number" min = 1 max = 4 name = "outcomes" id = "outcomes" required/>
+                <br><br>
+
+                <input type="submit" name="submit" value="Next" />
+            </form>
+        </div>
+{% endblock %}
