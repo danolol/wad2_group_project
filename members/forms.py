@@ -1,6 +1,14 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from quiz.models import UserProfile
 from django import forms
+
+class ProfilePicForm(forms.ModelForm):
+    picture = forms.ImageField(label="Profile Picture")
+
+    class Meta:
+        model = UserProfile
+        fields = ('picture',)
 
 class RegisterUserForm(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))

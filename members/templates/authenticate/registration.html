@@ -20,7 +20,7 @@
 
         <br/><br/>
 
-        <form action="{% url 'registration' %}" method=POST>
+        <form action="{% url 'registration' %}" method=POST enctype="multipart/form-data">
             
             {% csrf_token %}
 

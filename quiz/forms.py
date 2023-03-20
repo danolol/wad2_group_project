@@ -32,9 +32,3 @@ class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
         exclude = ('question', 'index')
-
-
-class UserProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ('picture',)

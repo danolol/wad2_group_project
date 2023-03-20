@@ -1,17 +1,16 @@
-from quiz.models import Quiz, Question, Answer
-from quiz.models import Outcome
+from quiz.models import Quiz, Question, Answer, Outcome
 from django.forms import formset_factory
-from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, reverse
-from .models import UserProfile
+from django.shortcuts import render, redirect, reverse, get_object_or_404
+from quiz.models import UserProfile
 from django.contrib.auth.models import User
 from django.views import View
 from django.utils.decorators import method_decorator
-from .forms import UserProfileForm
+from members.forms import ProfilePicForm
 from quiz.forms import QuizForm, OutcomeForm, QuestionForm, AnswerForm
+from django.contrib import messages
 from django.db import IntegrityError
 
 
@@ -170,23 +169,6 @@ def quiz_result(request, quiz_title_slug):
     print(context_dict['outcome'])
     return render(request, 'quiz/result.html', context=context_dict)
 
-    
-def register_profile(request):
-    form = UserProfileForm()
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            user_profile = form.save(commit=False)
-            user_profile.user = request.user
-            user_profile.save()
-            return redirect(reverse('quiz:home'))
-        else:
-            print(form.errors)
-
-    context_dict = {'form': form}
-    response = render(request, 'quiz/profile_registration.html', context_dict)
-    return response
-
 
 class ProfileView(View):
 
@@ -196,7 +178,7 @@ class ProfileView(View):
         except User.DoesNotExist:
             return None
         user_profile = UserProfile.objects.get_or_create(user=user)[0]
-        form = UserProfileForm({'picture': user_profile.picture})
+        form = ProfilePicForm({'picture': user_profile.picture})
         return (user, user_profile, form)
 
     @method_decorator(login_required)
@@ -214,7 +196,7 @@ class ProfileView(View):
             (user, user_profile, form) = self.get_user_details(username)
         except TypeError:
             return redirect(reverse('quiz:home'))
-        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        form = ProfilePicForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save(commit=True)
             return redirect('quiz:profile', user.username)
@@ -222,3 +204,21 @@ class ProfileView(View):
             print(form.errors)
             context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form}
             return render(request, 'quiz/profile.html', context_dict)
+
+
+def profile(request):
+	if request.user.is_authenticated:
+		profile = UserProfile.objects.get
+
+		# Post Form logic
+		if request.method == "POST":
+			# Get current user
+			current_user_profile = request.user.profile
+			# Save the profile
+			current_user_profile.save()
+
+
+		return render(request, "quiz/profile.html", {"profile":profile, })
+	else:
+		messages.success(request, ("You Must Be Logged In To View This Page..."))
+		return redirect('home')		

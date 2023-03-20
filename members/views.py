@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import RegisterUserForm
+from .forms import RegisterUserForm, ProfilePicForm
+from quiz.models import UserProfile
 
 # Create your views here.
 def login_user(request):
@@ -32,9 +34,9 @@ def logout_user(request):
 
 
 def register_user(request):
-    
+
     if request.method == "POST":
-        form = RegisterUserForm(request.POST)
+        form = RegisterUserForm(request.POST, request.FILES or None)
 
         if form.is_valid():
             form.save()
@@ -47,4 +49,5 @@ def register_user(request):
     else:
         form = RegisterUserForm()
 
-    return render(request, 'authenticate/registration.html', {'form':form})
+    return render(request, 'authenticate/registration.html', {'form':form, })
+

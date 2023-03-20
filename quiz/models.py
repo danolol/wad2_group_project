@@ -6,7 +6,7 @@ import datetime
 # Create your models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to='profile_pictures', blank=True)
+    picture = models.ImageField(null=True, upload_to='profile_pictures', default="default.png", blank=True)
 
     def __str__(self):
         return self.user.username

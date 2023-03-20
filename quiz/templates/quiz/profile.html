@@ -5,7 +5,6 @@
     Profile for {{ selected_user.username }}
 {% endblock %}
 
-
 {% block body_block %}
 
     <head>
@@ -16,7 +15,7 @@
         <div class="container">
             <h1 class="jumbotron-heading">{{ selected_user.username }}'s Profile</h1>
         </div>
-	<h2> <li class="nav-item"><a class="nav-link" href="{% url 'quiz:home' %}">Home Page </a></li> </h2>
+	<h2> <li class="nav-item"><a class="nav-link" href="{% url 'quiz:home' %}">Home Page</a></li> </h2>
     </div>
     <hr />
 
