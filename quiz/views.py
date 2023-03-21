@@ -129,7 +129,12 @@ def make_quiz_result(request):
     return render(request, 'quiz/make_quiz_result.html')
 
 def show_quizzes(request):
+    top_viewed = Quiz.objects.order_by('-views')[:20]
+    recently_added =  Quiz.objects.order_by('-date')
+
     context_dict = {}
+    context_dict['top_viewed'] = top_viewed
+    context_dict['recently_added'] = recently_added
     
     response = render(request, 'quiz/show_quizzes.html', context=context_dict)
     return response
