@@ -33,7 +33,7 @@
                 {% endif %}
             </ul>
 
-            <form class="d-flex" method=POST>
+            <form class="d-flex" method=POST action="{% url 'quiz:search-venues' %}">
                 {% csrf_token %}
         
                 <input class="form-control me-2" type="search" placeholder="Search Quiz" aria-label="Search" name="searched">

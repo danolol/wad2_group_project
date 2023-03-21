@@ -1,0 +1,27 @@
+{% extends 'quiz/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+{% endblock %}
+
+{% block body_block %}
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	
+	<center>
+	{% if searched %}
+	
+	<h1> You Searched For {{ searched}}</h1>
+	<br/>
+	
+	{% for quiz in quizzes %}
+		<li><a href="{% url 'quiz:take_quiz' quiz.slug %}">{{ quiz.title }}</a></li> <br/>
+	{% endfor %}
+	
+	{% else %}
+		<h1> You forgot to searched for a quiz!</h1>
+	{% endif %}
+	
+	</center>
+
+{% endblock %}

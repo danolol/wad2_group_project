@@ -13,10 +13,16 @@ from members.forms import ProfilePicForm, RegisterUserForm
 from quiz.forms import QuizForm, OutcomeForm, QuestionForm, AnswerForm
 from django.contrib import messages
 from django.db import IntegrityError
+from django.utils import timezone
 
 
 def home(request):
     context_dict = {}
+
+    most_viewed = Quiz.objects.order_by('-views')[:5]
+    most_recent = Quiz.objects.filter(date__lte=timezone.now()).order_by('date')[:5]
+    context_dict['views'] = most_viewed
+    context_dict['recents'] = most_recent
 
     response = render(request, 'quiz/home.html', context=context_dict)
     return response
@@ -232,4 +238,13 @@ def update_user(request):
 	else:
 		messages.success(request, ("You Must Be Logged In To View That Page..."))
 		return redirect('home')
-    
+
+
+def search_venues(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        quizzes = Quiz.objects.filter(title__contains=searched)
+
+        return render(request, 'quiz/search_venues.html', {'searched': searched, 'quizzes': quizzes})
+    else:
+        return render(request, 'quiz/search_venues.html', {})

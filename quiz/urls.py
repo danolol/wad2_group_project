@@ -16,4 +16,5 @@ urlpatterns = [
     path('quizzes/<slug:quiz_title_slug>/result', views.quiz_result, name = 'quiz_result'),
     path('profile/<username>', views.ProfileView.as_view(), name='profile'),
     path('profile/update_user/', views.update_user, name='update_user'),
+    path('search_venues', views.search_venues, name='search-venues'),
 ]

@@ -17,6 +17,19 @@
         </div>
     </div>
     <hr />
+	
+	<div class="Created quizzes"></
+		<h1>Quizzes Created</h1>
+    {% if user_profile.quiz_set.all %}
+        <ul>
+        {% for quiz in user_profile.quiz_set.all %}
+            <li><a href="{% url 'quiz:take_quiz' quiz.slug %}">{{ quiz.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>{{ selected_user.username }} has not created any quizzes yet.</p>
+    {% endif %}
+	</div>
 
         <div class="col"></div>
         <div class="col2"></div>
