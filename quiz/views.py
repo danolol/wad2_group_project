@@ -20,7 +20,7 @@ def home(request):
     context_dict = {}
 
     most_viewed = Quiz.objects.order_by('-views')[:5]
-    most_recent = Quiz.objects.filter(date__lte=timezone.now()).order_by('date')[:5]
+    most_recent = Quiz.objects.filter(date__lte=timezone.now()).order_by('-date')[:5]
     context_dict['views'] = most_viewed
     context_dict['recents'] = most_recent
 
