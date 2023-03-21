@@ -32,4 +32,6 @@ urlpatterns = [
     path('quiz/', include('quiz.urls')),
     path('members/', include('django.contrib.auth.urls')),
     path('members/', include('members.urls')),
+    path('accounts/register/', MyRegistrationView.as_view(), name='registration_register'),
+    path('accounts/', include('registration.backends.simple.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

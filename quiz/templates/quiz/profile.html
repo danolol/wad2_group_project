@@ -15,7 +15,6 @@
         <div class="container">
             <h1 class="jumbotron-heading">{{ selected_user.username }}'s Profile</h1>
         </div>
-	<h2> <li class="nav-item"><a class="nav-link" href="{% url 'quiz:home' %}">Home Page</a></li> </h2>
     </div>
     <hr />
 
@@ -31,7 +30,7 @@
 			<p> Email: {{ selected_user.email }} </p>
             <div>
                 {% if selected_user == user %}
-                    <form method="post" action="." enctype="multipart/form-data">
+                    <form method="post" action="{% url 'quiz:profile' username=selected_user.username %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <input type="submit" value="Update" />
@@ -40,6 +39,7 @@
             </div>
             </div>
         </div>
+        
 {% endblock %}
 
 

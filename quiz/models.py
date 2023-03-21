@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from django.db.models.signals import post_save
 import datetime
 
 # Create your models here.
@@ -10,6 +11,15 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+
+    def create_profile(sender, instance, created, **kwargs):
+        if created:
+            user_profile = UserProfile(user=instance)
+            user_profile.save()
+            
+    post_save.connect(create_profile, sender=User)
+
 
 class Quiz(models.Model):
 
