@@ -76,7 +76,7 @@ def make_quiz_main(request, num_questions, num_outcomes):
             ## Guarantee uniqueness
             try: 
                 quiz = quiz_form.save(commit=False)
-                quiz.creator = request.user
+                quiz.creator = get_object_or_404(UserProfile, user=request.user)
                 quiz.save()
             except IntegrityError:
                 context_dict['not_unique'] = True
@@ -169,26 +169,6 @@ def quiz_result(request, quiz_title_slug):
     print(context_dict['quiz'])
     print(context_dict['outcome'])
     return render(request, 'quiz/result.html', context=context_dict)
-
-
-@login_required
-def register_profile(request):
-    form = ()
-    if request.method == 'POST':
-        form = RegisterUserForm(request.POST, request.FILES)
-        if form.is_valid():
-            user_profile = form.save(commit=False)
-            user_profile.user = request.user
-            user_profile.save()
-            return redirect(reverse('quiz:home'))
-        else:
-            print(form.errors)
-
-    context_dict = {'form': form}
-    response = render(request, 'quiz/profile_registration.html', context_dict)
-    return response
-
-
 
 class ProfileView(View):
 
