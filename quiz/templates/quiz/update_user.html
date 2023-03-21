@@ -1,0 +1,37 @@
+{% extends 'quiz/base.html' %}
+
+{% block title_block %}
+    Login
+{% endblock %}
+    
+{% block body_block %}
+
+    {% if form.errors %}
+        <div class="alert alert-primary d-flex align-items-center" role="alert">
+            <div>
+                There was an error with your form
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="shadow p-4 mb-5 bg-body rounded">
+
+        <h1>Edit Details</h1>
+
+        <br/><br/>
+
+        <form action="" method=POST enctype="multipart/form-data">
+            
+            {% csrf_token %}
+
+            {{ user_form.as_p }}
+
+            {{ profile_form.as_p }}
+
+            <input type="submit" value="Update" class="btn btn-secondary">
+
+        </form>
+
+    </div>
+
+{% endblock %}
