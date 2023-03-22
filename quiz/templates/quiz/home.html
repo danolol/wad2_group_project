@@ -8,32 +8,59 @@ Homepage
 {% block body_block %}
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="{% static 'quiz/base.css' %}" rel="stylesheet">
 	
-	<div id = 'Most Viewed'>
-		<h1>Most Viewed Quizzes</h1>
-		
-		<ul>
-		{% for quiz in views %}
-			<li><a href="{% url 'quiz:take_quiz' quiz.slug %}">{{ quiz.title }}</a></li>
-		{% empty %}
-			<li>No quizzes have been viewed yet.</li>
-		{% endfor %}
-		</ul>
-  
-	</div>
-  
-	<div id = 'Most Recent'>
+	<div class="container text-center">
+		<div class="row align-items-start">
+			<div class="col" id = 'Most Viewed'>
 
-		<h1>Most Recent Quizzes</h1>
+				<br/><br/>
+
+				<h1>Most Viewed Quizzes</h1>
+
+				<br/><br/>
+				
+				<div class="list-group">
+					{% for quiz in views %}
+						<a href="{% url 'quiz:take_quiz' quiz.slug %}" class="list-group-item list-group-item-action" aria-current="true">
+						<div class="d-flex w-100 justify-content-between">
+							<h5 class="mb-1">{{ quiz.title }}</h5>
+							<small>{{ quiz.date }}</small>
+						</div>
+						<p class="mb-1">{{ quiz.description }}</p>
+						</a>
+					{% empty %}
+						<li>No quizzes have been viewed yet.</li>
+					{% endfor %}
+				</div>
 	
-		<ul>
-		{% for quiz in recents %}
-			<li><a href="{% url 'quiz:take_quiz' quiz.slug %}">{{ quiz.title }}</a></li>
-		{% empty %}
-			<li>No quizzes have been created yet.</li>
-		{% endfor %}
-		</ul>	
-  
+			</div>
+		
+			<div class="col" id = 'Most Recent'>
+
+				<br/><br/>
+
+				<h1>Most Recent Quizzes</h1>
+			
+				<br/><br/>
+
+				<div class="list-group">
+					{% for quiz in recents %}
+						<a href="{% url 'quiz:take_quiz' quiz.slug %}" class="list-group-item list-group-item-action" aria-current="true">
+						<div class="d-flex w-100 justify-content-between">
+							<h5 class="mb-1">{{ quiz.title }}</h5>
+							<small>{{ quiz.date }}</small>
+						</div>
+						<p class="mb-1">{{ quiz.description }}</p>
+						</a>
+					{% empty %}
+						<li>No quizzes have been viewed yet.</li>
+					{% endfor %}
+				</div>
+
+			</div>
+
+		</div>
 	</div>
 	
 

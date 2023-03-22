@@ -8,20 +8,46 @@ Quizzes
 {% block body_block %}
     <h1>Quizzes</h1>
 
-    <h1>The top 20 most viewed quizzes</h1>
+    <br/><br/>
 
-    <ul>
+    <h2>The top 20 most viewed quizzes</h2>
+
+    <br/>
+
+    <div class="list-group">
         {% for quiz in top_viewed %}
-        <li><a href= "{% url 'quiz:take_quiz' quiz.slug %}">{{quiz.title}}</a></li>
+            <a href="{% url 'quiz:take_quiz' quiz.slug %}" class="list-group-item list-group-item-action" aria-current="true">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ quiz.title }}</h5>
+                <small>{{ quiz.date }}</small>
+            </div>
+            <p class="mb-1">{{ quiz.description }}</p>
+            </a>
+        {% empty %}
+            <li>No quizzes have been viewed yet.</li>
         {% endfor %}
-    </ul>
+    </div>
 
-    <h1>All Quizzes</h1>
+    <br/><br/>
 
-    <ul>
+    <h2>All Quizzes</h2>
+
+    <br/>
+
+    <div class="list-group">
         {% for quiz in recently_added %}
-        <li><a href= "{% url 'quiz:take_quiz' quiz.slug %}">{{quiz.title}}</a></li>
+            <a href="{% url 'quiz:take_quiz' quiz.slug %}" class="list-group-item list-group-item-action" aria-current="true">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ quiz.title }}</h5>
+                <small>{{ quiz.date }}</small>
+            </div>
+            <p class="mb-1">{{ quiz.description }}</p>
+            </a>
+        {% empty %}
+            <li>No quizzes have been viewed yet.</li>
         {% endfor %}
-    </ul>
+    </div>
+
+    <br/><br/>
 
 {% endblock %}
