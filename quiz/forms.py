@@ -1,5 +1,5 @@
 from django import forms
-from quiz.models import Quiz, Outcome, Question, Answer, UserProfile
+from quiz.models import Quiz, Outcome, Question, Answer, UserProfile, Review
 
 class QuizForm(forms.ModelForm):
     title = forms.CharField(max_length=128, help_text = "Please enter a quiz title.", required=True)
@@ -32,3 +32,9 @@ class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
         exclude = ('question', 'index')
+
+# changes here
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ('comments', )
