@@ -6,28 +6,67 @@
 {% endblock %}
 
 {% block body_block %}
+
+    <link href="{% static 'quiz/review.css' %}" rel="stylesheet">
+
     <h1>{{ quiz }} - results</h1>
-    <div>
+    <div class="image-container">
         <img src = "{{ MEDIA_URL }}/{{ outcome.image }}" width = "250" height = "250" />
     </div>
+
     <p>Your outcome is... {{ outcome }}</p>
+
 
     <!-- ## all changes from here -->
 
-    
     <hr>
-    <h1>Quiz Reviews</h1>
+
+
+        <h1>Quiz Reviews</h1>
+
         {% for review in reviews %}
-            <div class="review">
-                <p>{{ review.user }}</p>
-                <p>{{ review.comments }}</p>
-                <p>{{ review.date }}</p>
+
+
+        <div class="card p-3">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div class="user d-flex flex-row align-items-center">
+
+                    <img src="{{ MEDIA_URL }}{{ review.user.picture }}" width="30" height="30" class="user-img rounded-circle">
+                    <span><label class="font-weight-bold text-primary">{{ review.user }}</label></span>
+
+                </div>
+
+
+                <small>{{ review.date }}</small>
+
+
             </div>
+
+            <br/>
+
+            <div class="container">
+                <label class="font-weight-bold">{{ review.comments }}</label>
+            </div>
+
+
+              
+        </div>
+
+        <br/>
+
+          
+            
         {% empty %}
             <p>No comments yet.</p>
         {% endfor %}
-    {% if user.is_authenticated %}
-    <a href="{% url 'quiz:make_review' quiz.slug %}">Add a review
-    {% endif %}
+
+        {% if user.is_authenticated %}
+
+        <br/><br/>
+
+        <a href="{% url 'quiz:make_review' quiz.slug %}">Add a review</a>
+        {% endif %}
 
 {% endblock %}

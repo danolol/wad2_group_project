@@ -38,3 +38,9 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ('comments', )
+
+    def __init__(self, *args, **kwargs):
+        super(ReviewForm, self).__init__(*args, **kwargs)
+
+        self.fields['comments'].widget.attrs['class'] = 'form-control'
+

@@ -4,11 +4,13 @@
 
 {% block body_block %}
     <h1>Add a Review</h1>
-    <form method="post" action = ''>
+    <hr>
+    <form class="form-control" method="post" action = ''>
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Submit">
+        <input class="btn btn-secondary" type="submit" value="Submit">
     </form>
 
+    <br/>
     <a href="{% url 'quiz:quiz_result' quiz.slug %}">Back to quiz</a>
 {% endblock %}
