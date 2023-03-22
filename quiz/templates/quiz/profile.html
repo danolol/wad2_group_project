@@ -18,35 +18,44 @@
     </div>
     <hr />
 	
-	<div class="Created quizzes"></
-		<h1>Quizzes Created</h1>
-    {% if user_profile.quiz_set.all %}
-        <ul>
-        {% for quiz in user_profile.quiz_set.all %}
-            <li><a href="{% url 'quiz:take_quiz' quiz.slug %}">{{ quiz.title }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>{{ selected_user.username }} has not created any quizzes yet.</p>
-    {% endif %}
-	</div>
+    <div class="container">
+        <div class="row alight-items-start">
+            <div class="container col">
+                <h2>Quizzes Created</h2>
 
-        <div class="col"></div>
-        <div class="col2"></div>
+                <br/>
 
-        <div class="card col3" style="width: 18rem;">
-            <img class="card-img-top" src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="300" height="300" alt="{{ selected_user.username }}'s profile image">
-            <div class="card-body">
-              <h5 class="card-title">Personal Information</h5>
+				<div class="list-group">
+					{% for quiz in user_profile.quiz_set.all %}
+						<a href="{% url 'quiz:take_quiz' quiz.slug %}" class="list-group-item list-group-item-action" aria-current="true">
+						<div class="d-flex w-100 justify-content-between">
+							<h5 class="mb-1">{{ quiz.title }}</h5>
+							<small>{{ quiz.date }}</small>
+						</div>
+						<p class="mb-1">{{ quiz.description }}</p>
+						</a>
+					{% empty %}
+						<li>No quizzes have been made yet.</li>
+					{% endfor %}
+				</div>
+
             </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Username: {{selected_user.username}}</li>
-              <li class="list-group-item">Email: {{ selected_user.email }}</li>
-            </ul>
-            <div class="card-body">
-              <a href="{% url 'quiz:update_user' %}" class="card-link">Edit Profile</a>
+
+            <div class="card col3" style="width: 18rem;">
+                <img class="card-img-top" src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="300" height="300" alt="{{ selected_user.username }}'s profile image">
+                <div class="card-body">
+                    <h5 class="card-title">Personal Information</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Username: {{selected_user.username}}</li>
+                    <li class="list-group-item">Email: {{ selected_user.email }}</li>
+                </ul>
+                <div class="card-body">
+                    <a href="{% url 'quiz:update_user' %}" class="card-link">Edit Profile</a>
+                </div>
             </div>
         </div>
+    </div>
         
 {% endblock %}
 
