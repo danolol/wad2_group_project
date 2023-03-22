@@ -4,7 +4,7 @@ from quiz.models import UserProfile
 from django import forms
 
 class ProfilePicForm(forms.ModelForm):
-    picture = forms.ImageField(label="Profile Picture")
+    picture = forms.ImageField(label="Profile Picture", widget=forms.FileInput(attrs={'class':'form-control'}))
 
     class Meta:
         model = UserProfile

@@ -7,6 +7,9 @@ Make a quiz
 {% endblock %}
 
 {% block body_block %}
+
+    <br/>
+
     <h1>Create a New Quiz</h1>
         <div>
             <form id="quiz_form" method="post" enctype="multipart/form-data" action="{% url 'quiz:make_quiz_main' num_questions num_outcomes %}">
@@ -27,12 +30,15 @@ Make a quiz
                     {{ hidden }}
                 {% endfor %}
 
+                <hr>
+
                 {% for field in quiz_form.visible_fields %}
                     {{ field.help_text }}
                     {{ field }} <b>{{ field.errors.as_text }}</b>
                     <br>
                 {% endfor %}
-                <br>
+                
+                <hr>
 
                 {% for form in outcomes_formset %}
                     {% for hidden in form.hidden_fields %}
@@ -45,7 +51,8 @@ Make a quiz
                         <br>
                     {% endfor %}
                 {% endfor %}
-                <br>
+                
+                <hr>
 
                 {% for q_form in questions_formset %}
                     {% for hidden in q_form.hidden_fields %}
@@ -58,6 +65,8 @@ Make a quiz
                     {% endfor %}
                     <br>
                 {% endfor %}
+
+                <hr>
 
                 {% for a_form in answers_formset %}
                     {% if forloop.counter0|modulo:num_outcomes == 0 %}
@@ -76,7 +85,9 @@ Make a quiz
                 {% endfor %}
                 <br>
 
-                <input type="submit" name="submit" value="Submit" />
+                <input class="btn btn-secondary" type="submit" name="submit" value="Submit" />
+
+                <br/><br/>
             </form>
         </div>
 {% endblock %}

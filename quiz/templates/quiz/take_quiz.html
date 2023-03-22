@@ -15,24 +15,29 @@
 
     <h1>{{ quiz.title }}</h1>
 
+    <hr>
+
     <br/>
 
     <form method="post" action ="{% url 'quiz:quiz_result' quiz.slug %}">
     {% csrf_token %}
     {% for question in quiz.question_set.all %}
         
-        <div>
-            {{ question.description }}
-            <br>
+        <div class="container">
+            <h3>{{ question.description }}</h3>
             {% for answer in question.answer_set.all %}
-                <input type = "radio" name = "answer{{ question.id }}" value = "{{ answer.id }}" id = "answer{{ forloop.counter }}" required> 
-                <label for="answer{{ forloop.counter }}">{{ answer.description }} </label>
+                <input class="form-check-input" type = "radio" name = "answer{{ question.id }}" value = "{{ answer.id }}" id = "answer{{ forloop.counter }}" required> 
+                <label class="form-check-label" for="answer{{ forloop.counter }}">{{ answer.description }} </label>
                 <br>
             {% endfor %}
         </div>
+
+        <br/>
     {% endfor %}
 
-    <input type="submit" value = "Submit Answers"/> 
+    <br/><br/>
+
+    <input class="btn btn-secondary" type="submit" value = "Submit Answers"/> 
     </form>
 {% endblock %}
 
