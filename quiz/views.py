@@ -225,9 +225,12 @@ class ProfileView(View):
         except TypeError:
             return redirect(reverse('quiz:home'))
 
+        reviewed_quizzes = Review.objects.filter(user=user_profile)
+
         context_dict = {'user_profile': user_profile, 
                         'selected_user': user, 
-                        'form': form}
+                        'form': form,
+                        'reviewed_quizzes': reviewed_quizzes}
         
         return render(request, 'quiz/profile.html', context_dict)
 
@@ -237,6 +240,8 @@ class ProfileView(View):
             (user, user_profile, form) = self.get_user_details(username)
         except TypeError:
             return redirect(reverse('quiz:home'))
+
+        reviewed_quizzes = Review.objects.filter(user=user_profile)
         form = ProfilePicForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save(commit=True)
@@ -245,7 +250,8 @@ class ProfileView(View):
             print(form.errors)
             context_dict = {'user_profile': user_profile, 
                             'selected_user': user, 
-                            'form': form}
+                            'form': form,
+                            'reviewed_quizzes': reviewed_quizzes}
             
             return render(request, 'quiz/profile.html', context_dict)
         
