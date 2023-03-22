@@ -5,6 +5,7 @@ import django
 django.setup()
 from quiz.models import UserProfile, Quiz, Question, Answer, Review, Outcome
 from django.contrib.auth.models import User
+from django.core.files import File
 import datetime
 
 def populate():
@@ -27,6 +28,10 @@ def populate():
          'date': datetime.date(2020, 8, 7)}
     ]
 
+    shoe_reviews = [
+
+    ]
+
     programming_outcomes = [
         'Object Oriented', 'Procedural', 'Functional', 'Imperative'
     ]
@@ -39,6 +44,10 @@ def populate():
         'Gouda', 'Mozzarella', 'Parmesan', 'Emmental'
     ]
 
+    shoe_outcomes = [
+        'Trainer', 'Boot', 'High Heel', 'Slip-on'
+    ]
+
     pizza_answers = [
         'Cheese', 'Olives', 'Mushrooms', 'Pepperoni'
     ]
@@ -49,6 +58,22 @@ def populate():
 
     season_answers = [
         'Spring', 'Summer', 'Autumn', 'Winter'
+    ]
+
+    netflix_answers = [
+        'Friends', 'Wednesday', 'Bridgerton', 'Sex education'
+    ]
+
+    disney_answers = [
+        'Lion King (OG is the only real one)', 'Hercules', 'Cinderella', 'Bambi'
+    ]
+
+    cinema_answers = [
+        'Popcorn', "McDonald's", 'Pizza', 'Sweets'
+    ]
+
+    cereal_answers = [
+        "Cheerio's", 'Cornflakes', 'Krave', 'Weetabix chocolate chip mini'
     ]
 
     programming_questions = [
@@ -64,6 +89,17 @@ def populate():
     cheese_questions = [
         {'description': 'Favourite season?',
          'answers': season_answers}
+    ]
+
+    shoe_questions = [
+        {'description': 'What is your favourite Netflix show?',
+         'answers': netflix_answers},
+        {'description': 'What is your favourite Disney movie?',
+         'answers': disney_answers},
+        {'description': 'What is your favourite food to eat in a cinema?',
+         'answers': cinema_answers},
+        {'description': 'What is your favourite cereal?',
+         'answers': cereal_answers}
     ]
 
     JasonQuizzes = [
@@ -93,6 +129,16 @@ def populate():
          'reviews' : cheese_reviews}
     ]
 
+    KazzoeQuizzes = [
+        {'title': 'What shoe are you?',
+         'description': 'Take this quiz and find out what kind of shoe you are',
+         'views': 3,
+         'date': datetime.date(2023, 3 ,22),
+         'questions': shoe_questions,
+         'outcomes': shoe_outcomes,
+         'reviews': shoe_reviews}
+    ]
+
     Users = {
         'Jason': JasonQuizzes, 'JAS0N2003': OtherQuizzes
     }
@@ -109,7 +155,7 @@ def populate():
                     i += 1
             i = 0
             for outcome in quiz['outcomes']:
-                add_outcome(q, outcome, i)
+                add_outcome(q, outcome['name'], outcome['image'], i)
                 i += 1
             for review in quiz['reviews']:
                 add_review(q, review['user'], review['comments'], review['date'])
@@ -142,6 +188,10 @@ def add_answer(question, description, index):
 
 def add_outcome(quiz, name, index):
     o = Outcome.objects.get_or_create(quiz=quiz, name=name, index=index)[0]
+    imageName = name.replace(" ", "")
+    with open("media.outcome_images"+imageName) as f:
+        image = File(f)
+    o.image = image
     o.save()
     return o
 
