@@ -5,12 +5,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, reverse, get_object_or_404
-from quiz.models import UserProfile
+from quiz.models import UserProfile, Review
 from django.contrib.auth.models import User
 from django.views import View
 from django.utils.decorators import method_decorator
 from members.forms import ProfilePicForm, RegisterUserForm
-from quiz.forms import QuizForm, OutcomeForm, QuestionForm, AnswerForm
+from quiz.forms import QuizForm, OutcomeForm, QuestionForm, AnswerForm, ReviewForm
 from django.contrib import messages
 from django.db import IntegrityError
 from django.utils import timezone
@@ -161,6 +161,8 @@ def quiz_result(request, quiz_title_slug):
 
     
     max = 0
+    # change here
+    most_common_index = 0
     for i in range(len(selected_array)):
         if max < selected_array[i]:
             most_common_index = i
@@ -172,14 +174,38 @@ def quiz_result(request, quiz_title_slug):
         if outcome.index == most_common_index:
             final_outcome = outcome
             break
-    
+    reviews = quiz.review_set.all()
     context_dict = {}
     context_dict['outcome'] = final_outcome
     context_dict['quiz'] = quiz
+    context_dict['reviews'] = reviews
     
     print(context_dict['quiz'])
     print(context_dict['outcome'])
     return render(request, 'quiz/result.html', context=context_dict)
+
+@login_required
+def make_review(request, quiz_title_slug):
+    quiz = Quiz.objects.get(slug=quiz_title_slug)
+    user_profile = UserProfile.objects.get(user = request.user)
+
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.quiz = quiz
+            review.user = user_profile
+            review.date = timezone.now()
+            review.save()
+            return redirect(reverse('quiz:quiz_result', args=[quiz_title_slug]))
+    else:
+        form = ReviewForm()
+    context_dict = {}
+    context_dict['form'] = form
+    context_dict['quiz'] = quiz 
+
+    return render(request, 'quiz/make_review.html', context = context_dict)
 
 class ProfileView(View):
 
