@@ -1,51 +1,55 @@
 import os
+from pathlib import Path
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 'wad2_group_project.settings')
 import django
 django.setup()
 from quiz.models import UserProfile, Quiz, Question, Answer, Review, Outcome
 from django.contrib.auth.models import User
-from django.core.files import File
+from django.core.files.images import ImageFile
 import datetime
 
 def populate():
 
     programming_reviews = [
         {'user': 'Kazzoe',
-         'comments': "It's a bit short",
+         'comments': "It's a bit short.",
          'date': datetime.date(2023, 3, 6)}
     ]
 
     fruit_reviews = [
         {'user': 'Kazzoe',
-         'comments': "It's fruity",
+         'comments': "It's fruity.",
          'date': datetime.date(2022, 2, 12)}
     ]
 
     cheese_reviews = [
         {'user': 'Kazzoe',
-         'comments': "It's cheesy and Winter should definitely be cheddar; there should be more questions",
+         'comments': "It's cheesy and Winter should definitely be cheddar; there should be more questions.",
          'date': datetime.date(2020, 8, 7)}
     ]
 
     shoe_reviews = [
-
+        {'user': 'Jason',
+         'comments': "This quiz just called me basic, what has my life come to.",
+         'date': datetime.date(2023, 3, 22)}
     ]
 
     programming_outcomes = [
-        'Object Oriented', 'Procedural', 'Functional', 'Imperative'
+        'Object Oriented.png', 'Procedural.png', 'Functional.png', 'Imperative.jpg'
     ]
 
     fruit_outcomes = [
-        'Orange', 'Apple', 'Strawberry', 'Pomegranate'
+        'Orange.jpg', 'Apple.jpg', 'Strawberry.jpg', 'Pomegranate.jpg'
     ]
 
     cheese_outcomes = [
-        'Gouda', 'Mozzarella', 'Parmesan', 'Emmental'
+        'Gouda.jpg', 'Mozzarella.jpg', 'Parmesan.jpg', 'Emmental.jpg'
     ]
 
     shoe_outcomes = [
-        'Trainer', 'Boot', 'High Heel', 'Slip-on'
+        'Trainer.jpg', 'Boot.jpg', 'High Heel.jpg', 'Slip-on.jpg'
     ]
 
     pizza_answers = [
@@ -131,7 +135,7 @@ def populate():
 
     KazzoeQuizzes = [
         {'title': 'What shoe are you?',
-         'description': 'Take this quiz and find out what kind of shoe you are',
+         'description': 'Take this quiz and find out what kind of shoe you are (Multiple questions)',
          'views': 3,
          'date': datetime.date(2023, 3 ,22),
          'questions': shoe_questions,
@@ -140,7 +144,7 @@ def populate():
     ]
 
     Users = {
-        'Jason': JasonQuizzes, 'JAS0N2003': OtherQuizzes
+        'Jason': JasonQuizzes, 'JAS0N2003': OtherQuizzes, 'Kazzoe': KazzoeQuizzes
     }
 
     for user, quizlist in Users.items():
@@ -155,7 +159,7 @@ def populate():
                     i += 1
             i = 0
             for outcome in quiz['outcomes']:
-                add_outcome(q, outcome['name'], outcome['image'], i)
+                add_outcome(q, outcome, i)
                 i += 1
             for review in quiz['reviews']:
                 add_review(q, review['user'], review['comments'], review['date'])
@@ -164,6 +168,7 @@ def populate():
 def add_user(username):
     u = User.objects.get_or_create(username=username)[0]
     up = UserProfile.objects.get_or_create(user=u)[0]
+    up.picture = ImageFile(open("media/profile_pictures/default.png","rb"))
     u.save()
     up.save()
     return up
@@ -187,10 +192,10 @@ def add_answer(question, description, index):
     return a
 
 def add_outcome(quiz, name, index):
-    o = Outcome.objects.get_or_create(quiz=quiz, name=name, index=index)[0]
+    description = name.replace(".jpg", "").replace(".png", "")
+    o = Outcome.objects.get_or_create(quiz=quiz, name=description, index=index)[0]
     imageName = name.replace(" ", "")
-    with open("media.outcome_images"+imageName) as f:
-        image = File(f)
+    image = ImageFile(open("media/outcome_images/"+imageName, "rb"))
     o.image = image
     o.save()
     return o
