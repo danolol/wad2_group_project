@@ -10,7 +10,12 @@
 {% endblock %}
 
 {% block body_block %}
+
+    <br/>
+
     <h1>{{ quiz.title }}</h1>
+
+    <br/>
 
     <form method="post" action ="{% url 'quiz:quiz_result' quiz.slug %}">
     {% csrf_token %}
