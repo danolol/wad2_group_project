@@ -38,7 +38,28 @@
 						<li>No quizzes have been made yet.</li>
 					{% endfor %}
 				</div>
+            </div>
 
+            <div class="container col">
+                <h2>Quizzes Reviewed</h2>
+
+                <br/>
+
+				<div class="list-group">
+					{% for review in reviewed_quizzes %}
+                    <a href="{% url 'quiz:quiz_result' review.quiz.slug %}" class="list-group-item list-group-item-action" aria-current="true">
+						<div class="d-flex w-100 justify-content-between">
+							<h5 class="mb-1">{{ review.quiz.title }}</h5>
+							<small>{{ review.quiz.date }}</small>
+						</div>
+						<p class="mb-1">{{ review.quiz.description }}</p>
+                        </br>
+                        <p class="mb-1">Your Review: {{ review.comments }}</p>
+						</a>
+					{% empty %}
+						<li>No quizzes have been reviewed yet.</li>
+					{% endfor %}
+				</div>
             </div>
 
             <div class="card col3" style="width: 18rem;">
@@ -58,7 +79,6 @@
     </div>
         
 {% endblock %}
-
 
 
 
