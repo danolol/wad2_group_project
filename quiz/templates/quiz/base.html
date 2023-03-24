@@ -20,7 +20,7 @@
     
     <body>
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
@@ -63,8 +63,11 @@
 
             {% endblock %}
 
+            <script src="{% static 'js/scroll.js' %}"></script>
+
         </div>
-    
+
+
     </body>
 
 

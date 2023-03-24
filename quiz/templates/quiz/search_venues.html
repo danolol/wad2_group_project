@@ -8,20 +8,32 @@
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	
-	<center>
-	{% if searched %}
 	
-	<h1> You Searched For {{ searched }}</h1>
-	<br/>
-	
-	{% for quiz in quizzes %}
-		<li><a href="{% url 'quiz:take_quiz' quiz.slug %}">{{ quiz.title }}</a></li> <br/>
-	{% endfor %}
-	
-	{% else %}
-		<h1> You forgot to searched for a quiz!</h1>
-	{% endif %}
-	
-	</center>
+			<center>
+			{% if searched %}
+            <div class="container col">
+                <h1> You Searched For {{ searched }}</h1>
+				<br/>
+
+				<div class="list-group">
+					{% for quiz in quizzes %}
+					<a href="{% url 'quiz:take_quiz' quiz.slug %}" class="list-group-item list-group-item-action" aria-current="true">
+						<div >
+							<h5 class="mb-1">{{ quiz.title }}</h5>
+							<small>{{ quiz.date }}</small>
+						</div>
+						<p class="mb-1">{{ quiz.description }}</p>
+						</a>
+					</br>
+					{% endfor %}
+					{% else %}
+						<h1> You forgot to searched for a quiz!</h1>
+					{% endif %}
+				</div>
+            </div>
+		</center>
+
+    
+        
 
 {% endblock %}

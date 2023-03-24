@@ -143,6 +143,8 @@ def take_quiz(request, quiz_title_slug):
     context_dict = {}
 
     quiz = Quiz.objects.get(slug=quiz_title_slug)
+    quiz.views += 1
+    quiz.save()
     
     context_dict['quiz'] = quiz
     return render(request, 'quiz/take_quiz.html', context=context_dict)
@@ -161,7 +163,6 @@ def quiz_result(request, quiz_title_slug):
 
     
     max = 0
-    # change here
     most_common_index = 0
     for i in range(len(selected_array)):
         if max < selected_array[i]:
@@ -179,9 +180,7 @@ def quiz_result(request, quiz_title_slug):
     context_dict['outcome'] = final_outcome
     context_dict['quiz'] = quiz
     context_dict['reviews'] = reviews
-    
-    print(context_dict['quiz'])
-    print(context_dict['outcome'])
+
     return render(request, 'quiz/result.html', context=context_dict)
 
 @login_required

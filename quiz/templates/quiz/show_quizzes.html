@@ -7,6 +7,8 @@ Quizzes
 
 {% block body_block %}
 
+    <link href="{% static 'quiz/quizzes.css' %}" rel="stylesheet">
+    
     <br/>
 
     <h1>Quizzes</h1>
@@ -17,7 +19,7 @@ Quizzes
 
     <br/>
 
-    <div class="list-group">
+    <div class="list-group" style="max-height: 300px; overflow-y: scroll;">
         {% for quiz in top_viewed %}
             <a href="{% url 'quiz:take_quiz' quiz.slug %}" class="list-group-item list-group-item-action" aria-current="true">
             <div class="d-flex w-100 justify-content-between">
@@ -37,7 +39,7 @@ Quizzes
 
     <br/>
 
-    <div class="list-group">
+    <div class="list-group" style="max-height: 1000px; overflow-y: scroll;">
         {% for quiz in recently_added %}
             <a href="{% url 'quiz:take_quiz' quiz.slug %}" class="list-group-item list-group-item-action" aria-current="true">
             <div class="d-flex w-100 justify-content-between">
@@ -52,5 +54,9 @@ Quizzes
     </div>
 
     <br/><br/>
+
+    <button class="scrollToTopBtn">^</button>
+
+    <footer></footer>
 
 {% endblock %}
